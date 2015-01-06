@@ -1,0 +1,9 @@
+{
+  "firebase": "chat-room-test",
+  "public": ".",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}

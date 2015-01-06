@@ -5,43 +5,75 @@
   <title>Chat App</title>
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/bootstrap-theme.css">
-  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <script type="text/x-handlebars">
     <h2>Chat App</h2>
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav">
+          <li> {{link-to 'chat' 'room' 1}}</li>
+        </ul>
+        {{#if session.isAuthenticated}}
+        <a {{ action 'invalidateSession' }} class="btn btn-danger navbar-btn navbar-left" >Logout</a>
+          {{else}}
+          {{#link-to 'login' class="btn navbar-btn navbar-left" }}Login{{/link-to}}
+          {{/if}}
+        </div>
+      </nav>
+      {{#if session.isAuthenticated}}
+      <p>Logged in as <strong>{{session.userFn}} {{session.userLn}}</strong> </p>
+      {{/if}}
     {{outlet}}
   </script>
 
   <script type="text/x-handlebars" id="index">
-    {{link-to 'go to chat room' 'room' 1}}
+    <p>{{link-to 'go to chat room' 'room' 1}}<p>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="login">
+      <h3>Login</h3>
+    <div>
+      <a href="#" {{action "authenticate"}}>Login using Google</a>
+    </div>
+
+    {{#if errorMessage}}
+    <div class="alert alert-danger">
+      <p>
+        <strong>Login failed:</strong>
+        <code>{{errorMessage}}</code>
+      </p>
+    </div>
+    {{/if}}
   </script>
 
   <script type="text/x-handlebars" id="room">
-    <div class="col-md-4">
-      <div class="panel panel-default">
-        <div class="panel-heading">Chat Room 1</div>
-        <div class="panel-body">
+    <div class="container">
+        <h1>Chat Room 1</h1>
+          <ul class="list-group">
           {{#each message in model}}
-          <div>
-            <strong>{{message.user}}</strong> -> <span>{{message.content}}</span>
-          </div>
-          {{/each}}
-        </div>
+            <li class="list-group-item">
+              <span><strong>{{message.user}}: </strong><span>{{message.content}}</span></span>
+              <button {{action 'delete' message}}class="btn btn-xs pull-right"><span class='glyphicon glyphicon-remove'></span></button>
+            </li>
+            {{/each}}
+          </ul>
       </div>
-  <form role="form" {{action 'sendMessage' on="submit"}}>
-    <div class="input-group">
-      <span class="input-group-addon">username</span>
-  {{input type="text" class="form-control" placeholder="Carlos..." value=username }}
-</div>
-  <div class="input-group">
-    {{input type="text" class="form-control" placeholder="message..." value=message}}
-    <span class="input-group-btn">
-      <button type='submit' class="btn btn-default" type="button">Send</button>
-    </span>
-  </div>
-</form>
+      <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container">
+          <form role="form" {{action 'sendMessage' on="submit"}}>
+            <div class="input-group">
+              <div class="input-group">
+                {{input type="text" class="form-control" placeholder="message..." value=message}}
+                <span class="input-group-btn">
+                  <button type='submit' class="btn btn-default" type="button">Send</button>
+                </span>
+              </div>
+            </form>
+        </div>
+      </nav>
 </div>
 </script>
 
@@ -52,6 +84,8 @@
   <script src="js/libs/handlebars-v2.0.0.js"></script>
   <script src="js/libs/ember-1.9.1.js"></script>
   <script src="js/libs/ember-data.min.js"></script>
+  <script src="js/libs/ember-simple-auth.js"></script>
+  <script src="js/libs/ember-oauth2.js"></script>
   <!-- Firebase -->
   <script src="https://cdn.firebase.com/js/client/2.0.6/firebase.js"></script>
   <!-- EmberFire -->
@@ -61,7 +95,7 @@
 
   <script src="js/app.js"></script>
 
-  <script src="js/libs/bootstrap.min.js"></script>
+  <script src="js/libs/bootstrap.js"></script>
   <!-- to activate the test runner, add the "?test" query string parameter -->
   <script src="tests/runner.js"></script>
 </body>

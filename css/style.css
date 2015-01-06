@@ -2,3 +2,16 @@
 .ember-application {
     margin: 20px;
 }
+@media (min-width: 268px) {
+  .navbar-nav {
+    float: left;
+    margin: 0;
+  }
+  .navbar-nav > li {
+    float: left;
+  }
+  .navbar-nav > li > a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+}
